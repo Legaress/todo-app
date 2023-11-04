@@ -7,9 +7,21 @@ import { Todo } from '../models/todo.model';
 export const createTodoHTML = (todo) => {
   if (!todo) throw new Error('A TODO object is required');
 
-  const html = `<p>${todo.description} </p>`;
+  const {id, description, done} = todo;
+
+  const html = 
+              `<div class="view">
+                <input class="toggle" type="checkbox" ${ done ? 'checked' : '' }>
+                <label> ${description} </label>
+                <button class="destroy"></button>
+              </div>
+              <input class="edit" value="Create a TodoMVC template">`
+
   const liElement = document.createElement('li');
-  liElement.innertHTML = html;
+  liElement.innerHTML = html;
+  
+  liElement.setAttribute('data-id',id);
+  if(done) liElement.setAttribute('class','completed');
 
   return liElement;
 };

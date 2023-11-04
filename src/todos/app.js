@@ -3,7 +3,7 @@ import html from './app.html?raw';
 import { renderTodos } from './use-cases';
 
 const ElementIDs = {
-  TodoList: 'todo-list',
+  TodoList: '.todo-list',
 };
 const displayTodos = () => {
   const todos = todoStore.getTodos(todoStore.getCurrentFilter());
