@@ -25,18 +25,22 @@ export const App = (elementId) => {
 
   //Refercias HTML
   const elementNewTodoInput = document.querySelector(ElementIDs.NewTodoInput);
+  const elementTodoListUL= document.querySelector(ElementIDs.TodoList);
 
-  elementNewTodoInput.addEventListener('keyup',(event) => {
-  
-    if(event.key === "Enter") {
-      if(event.target.value.trim() !== ''){
-        todoStore.addTodo(event.target.value.trim());
-        console.log(event.target.value.trim());
-        displayTodos();
-        event.target.value = '';
-      }
+  elementNewTodoInput.addEventListener('keyup', (event) => {
+    if (event.key === "Enter" && event.target.value.trim() !== '') {
+      todoStore.addTodo(event.target.value.trim());
+      displayTodos();
+      event.target.value = '';
     }
-  })
+  });
 
-  
+  elementTodoListUL.addEventListener('click',(event) => {
+    const element = event.target.closest('[data-id]');
+    const id = element.getAttribute('data-id');
+    todoStore.toggleTodo(id);
+    displayTodos();
+  });
+
+
 };
