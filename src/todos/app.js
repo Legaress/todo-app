@@ -4,6 +4,7 @@ import { renderTodos } from './use-cases';
 
 // Identificadores de elementos en el DOM
 const ElementIDs = {
+  ClearCompleted: '.clear-completed',
   TodoList: '.todo-list',
   NewTodoInput: '#new-todo-input',
 };
@@ -32,6 +33,7 @@ export const App = (elementId) => {
   // Referencias a elementos HTML
   const newTodoInput = document.querySelector(ElementIDs.NewTodoInput);
   const todoListUL = document.querySelector(ElementIDs.TodoList);
+  const clearCompletedButton = document.querySelector(ElementIDs.ClearCompleted);
 
   // Escucha el evento 'keyup' para la creación de nuevas tareas
   newTodoInput.addEventListener('keyup', (event) => {
@@ -56,4 +58,10 @@ export const App = (elementId) => {
       }
     }
   });
+
+  // Escucha el evento 'click' para borrar de la lista los elementos completados
+  clearCompletedButton.addEventListener('click',() => {
+    todoStore.deleteCompleted();
+    displayTodos();
+  } )
 };
