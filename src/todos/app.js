@@ -1,33 +1,40 @@
 import todoStore from '../store/todo.store';
-import html from './app.html?raw';
+import appHtml from './app.html?raw';
 import { renderTodos } from './use-cases';
 
+// Identificadores de elementos en el DOM
 const ElementIDs = {
   TodoList: '.todo-list',
   NewTodoInput: '#new-todo-input',
 };
+
+/**
+ * Actualiza la visualización de tareas en la interfaz.
+ */
 const displayTodos = () => {
   const todos = todoStore.getTodos(todoStore.getCurrentFilter());
   renderTodos(ElementIDs.TodoList, todos);
 };
 
 /**
- * @param {String} elementId
+ * Inicializa la aplicación en el elemento HTML especificado.
+ * @param {String} elementId - ID del elemento HTML en el que se inicializará la app.
  */
 export const App = (elementId) => {
-  //Cuando se llama a App
+  // Inicializa la aplicación cuando se llama a App
   (() => {
-    const app = document.createElement('div');
-    app.innerHTML = html;
-    document.querySelector(elementId).append(app);
+    const appContainer = document.createElement('div');
+    appContainer.innerHTML = appHtml;
+    document.querySelector(elementId).append(appContainer);
     displayTodos();
   })();
 
-  //Refercias HTML
-  const elementNewTodoInput = document.querySelector(ElementIDs.NewTodoInput);
-  const elementTodoListUL= document.querySelector(ElementIDs.TodoList);
+  // Referencias a elementos HTML
+  const newTodoInput = document.querySelector(ElementIDs.NewTodoInput);
+  const todoListUL = document.querySelector(ElementIDs.TodoList);
 
-  elementNewTodoInput.addEventListener('keyup', (event) => {
+  // Escucha el evento 'keyup' para la creación de nuevas tareas
+  newTodoInput.addEventListener('keyup', (event) => {
     if (event.key === "Enter" && event.target.value.trim() !== '') {
       todoStore.addTodo(event.target.value.trim());
       displayTodos();
@@ -35,18 +42,18 @@ export const App = (elementId) => {
     }
   });
 
-  elementTodoListUL.addEventListener('click',(event) => {
-    const element = event.target.closest('[data-id]');
+  // Escucha el evento 'click' en la lista de tareas para el cambio de estado o eliminación
+  todoListUL.addEventListener('click', (event) => {
+    const selectedElement = event.target.closest('[data-id]');
 
-    if( !!element && event.target.className === "toggle"){
-      todoStore.toggleTodo(element.getAttribute('data-id'));
-      displayTodos();
-    }
-    else if( !!element && event.target.className === "destroy"){
-      todoStore.deleteTodo(element.getAttribute('data-id'));
-      displayTodos();
+    if (!!selectedElement) {
+      if (event.target.className === "toggle") {
+        todoStore.toggleTodo(selectedElement.getAttribute('data-id'));
+        displayTodos();
+      } else if (event.target.className === "destroy") {
+        todoStore.deleteTodo(selectedElement.getAttribute('data-id'));
+        displayTodos();
+      }
     }
   });
-
-
 };
