@@ -7,6 +7,7 @@ const ElementIDs = {
   ClearCompleted: '.clear-completed',
   TodoList: '.todo-list',
   NewTodoInput: '#new-todo-input',
+  Filters: '.filters',
 };
 
 /**
@@ -34,6 +35,7 @@ export const App = (elementId) => {
   const newTodoInput = document.querySelector(ElementIDs.NewTodoInput);
   const todoListUL = document.querySelector(ElementIDs.TodoList);
   const clearCompletedButton = document.querySelector(ElementIDs.ClearCompleted);
+  const filtersUL = document.querySelector(ElementIDs.Filters);
 
   // Escucha el evento 'keyup' para la creación de nuevas tareas
   newTodoInput.addEventListener('keyup', (event) => {
@@ -64,4 +66,18 @@ export const App = (elementId) => {
     todoStore.deleteCompleted();
     displayTodos();
   } )
+
+  // Escucha el evento 'click' para seleccionar el filtro de la lista
+  filtersUL.addEventListener('click', (event) => {
+    if(event.target.tagName === "A" && !event.target.classList.contains("selected")){
+      const selectedItem = filtersUL.querySelector(".selected");
+      if(selectedItem){
+        selectedItem.classList.remove('selected');
+      }
+
+      event.target.classList.add('selected');
+      todoStore.setFilter(event.target.id);
+      displayTodos();
+    }
+  })
 };
