@@ -1,6 +1,6 @@
 import todoStore from '../store/todo.store';
 import appHtml from './app.html?raw';
-import { renderTodos } from './use-cases';
+import { renderTodos, renderPending } from './use-cases';
 
 // Identificadores de elementos en el DOM
 const ElementIDs = {
@@ -8,21 +8,28 @@ const ElementIDs = {
   TodoList: '.todo-list',
   NewTodoInput: '#new-todo-input',
   Filters: '.filters',
+  PendingCount: '#pending-count',
 };
 
-/**
- * Actualiza la visualización de tareas en la interfaz.
- */
-const displayTodos = () => {
-  const todos = todoStore.getTodos(todoStore.getCurrentFilter());
-  renderTodos(ElementIDs.TodoList, todos);
-};
 
 /**
  * Inicializa la aplicación en el elemento HTML especificado.
  * @param {String} elementId - ID del elemento HTML en el que se inicializará la app.
  */
 export const App = (elementId) => {
+  
+  //Actualiza la visualización de tareas en la interfaz.
+  const displayTodos = () => {
+    const todos = todoStore.getTodos(todoStore.getCurrentFilter());
+    renderTodos(ElementIDs.TodoList, todos);
+    updatePendingCount();
+  };
+
+  //Actualiza la visualizacion de la cantidad de tareas pendientes
+  const updatePendingCount = () => {
+    renderPending(ElementIDs.PendingCount);
+  };
+
   // Inicializa la aplicación cuando se llama a App
   (() => {
     const appContainer = document.createElement('div');
