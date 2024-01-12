@@ -3,7 +3,7 @@ import { Todo } from '../todos/models/todo.model';
 /**
  * Filtros para las tareas.
  */
-const Filters = {
+export const Filters = {
   All: 'all',
   Completed: 'completed',
   Pending: 'pending',
